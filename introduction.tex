@@ -1,0 +1,15 @@
+\chapter*{Introduction}
+
+\pagestyle{fancy}
+
+\addcontentsline{toc}{chapter}{Introduction}
+
+\markboth{INTRODUCTION}{}
+
+\label{introduction}
+
+Today, the digital entertainment industry is rapidly becoming the largest and highest earning in the world, threatening the old, well-established industries. More and more people prefer to play video games or enjoy augmented reality (AR) or virtual reality (VR) content than ever. For example, almost 1 in 2 Germans are gamers, out of which the vast majority plays regularly\cite{germans}. The number of related jobs is also increasing. A higher number of people that enjoy this domain now consider these jobs safe and viable, which in turn further develops the industry and improves the quantity, but also the quality of the products. Obviously, people also have to be trained, so schools and universities have a much wider range of options when it comes to game development, design and art.\\
+
+There are many methods of creating digital content. Through the internet, anyone can access software and learning materials in order to create anything from textures and concept art, to 3D models and even fully playable games. Manually creating the assets needed for a game or any other application was and still is the main method, but sometimes, for some projects, doing all the work by hand is just impossible. Procedural generation, the key aspect discussed in this thesis, is a method of generating content algorithmically, without much, or even any human input. Developers can write functions that make use of pseudo-randomness to generate potentially infinite worlds, among other things such as textures and geometrical shapes\cite{procgenwiki}.\\
+
+My main goal is creating a system that infinitely generates believable virtual terrain, mainly using Perlin noise, an algorithm of great importance in the world of procedural generation that will be discussed later on. I will also discuss some other noise algorithms and their uses, and some clever ways of optimizing the generation speed. When the complete system is put together, due to the high number of computations, the amount of vertices that have to be drawn on the user's screen and also other factors, the application might run slow on older hardware, so the need of optimization is great. I will also cover some approachable solutions to simulations that enhance the virtual environment, such as hydraulic erosion and volumetric clouds.
