@@ -1,4 +1,4 @@
-\chapter{Theoretical Aspects}
+\chapter{Theoretical aspects}
 
 \pagestyle{fancy}
 
@@ -22,7 +22,7 @@ In the world of computer graphics, procedural noise is one of the most successfu
 
 \begin{figure}[htp]
     \centering
-    \includegraphics[width = 10cm]{figures/perlinMarbleVase.PNG}
+    \includegraphics[width = 8cm]{figures/perlinMarbleVase.PNG}
     \caption{Perlin's procedural noise algorithm output (left) and his famous marble vase with one of the first procedurally generated textures (right).}
     \cite{perlin1985image}
     \label{fig:perlinMarbleVase}
@@ -86,7 +86,14 @@ The height maps can be further processed by applying artificial image filters, s
 
 \subsection{Caves, dungeons and mazes}
 
-In some games, it is not always enough to just let the player wander around on the surface. A sense of verticality is much needed for some worlds, especially the procedurally generated ones. Structures like cave systems, ravines and dungeons (as seen in \textit{Minecraft}), add completely new gameplay elements. For some other genres, mazes add the element of tension, surprise and excitement. Intuitively, one can attempt to use \textit{3D Perlin noise}, but the results can end up underwhelming. Among successful generation methods are \textit{cellular automata} and \textit{Perlin worms}. \textit{Cellular automata} is a grid-like system with spaces occupied by what we will call \textit{cells}, that follow the next rules: if a cell has fewer than two neighbours, it dies; if it has two or three neighbours, it lives on to the next generation; if it has more than three neighbours, it dies; the last rule is if a dead cell is surrounded by exactly three cells, it gets revived. By experimenting with starting configurations of cells, we can simulate a high amount of generations and mark as visited each space of the grid that has had a cell at one point. Cells will move around the grid, and eventually, they will stabilise. The results are complex grids that can now resemble cave systems, or dungeons (see Figure \ref{fig:cellularAutomata}). For maze generation, the starting configurations have to be crafted and thought of beforehand. \textit{Perlin worm} is a method that uses three octaves of \textit{Perlin noise}, using each one to compute an x-y-z values tuple. Choosing a starting point in a 3D space, one can run many iterations, generating at each step new values for the octaves, thus receiving new coordinates. Following these coordinates yield great results in term of cave systems, the best example being, again, the game \textit{Minecraft}, which we already covered. 
+In some games, it is not always enough to just let the player wander around on the surface. A sense of verticality is much needed for some worlds, especially the procedurally generated ones. Structures like cave systems, ravines and dungeons (as seen in \textit{Minecraft}), add completely new gameplay elements. For some other genres, mazes add the element of tension, surprise and excitement. Intuitively, one can attempt to use \textit{3D Perlin noise}, but the results can end up underwhelming. Among successful generation methods are \textit{cellular automata} and \textit{Perlin worms}. \textit{Cellular automata} is a grid-like system with spaces occupied by what we will call \textit{cells}, that follow the next rules:
+\begin{gather*}
+    (1)\;if\;a \;cell\;has\;fewer\;than\;two\;neighbours,\;it\;dies;\\
+    (2)\;if\;a \;cell\;has\;two\;or\;three\;neighbours,\;it\;lives\;on\;to\;the\;next\;generation;\\
+    (3)\;if\;a \;cell\;has\;more\;than\;three\;neighbours,\;it\;dies;\\
+    (4)\;if\;a\;dead\;cell\;is\;surrounded\;by\;exactly\;three\;cells,\;it\;gets\;revived;
+\end{gather*}
+By experimenting with starting configurations of cells, we can simulate a high amount of generations and mark as visited each space of the grid that has had a cell at one point. Cells will move around the grid, and eventually, they will stabilise. The results are complex grids that can now resemble cave systems, or dungeons (see Figure \ref{fig:cellularAutomata}). For maze generation, the starting configurations have to be crafted and thought of beforehand. \textit{Perlin worm} is a method that uses three octaves of \textit{Perlin noise}, using each one to compute an x-y-z values tuple. Choosing a starting point in a 3D space, one can run many iterations, generating at each step new values for the octaves, thus receiving new coordinates. Following these coordinates yield great results in term of cave systems, the best example being, again, the game \textit{Minecraft}, which we already covered. 
 
 \begin{figure}[htp]
     \centering
@@ -108,34 +115,99 @@ One more complex solution would be to generate two extra noise maps, one for hum
 
 \subsection{Vegetation}
 
-A big challenge in game development is populating vast areas with small vegetation, grass and trees. Even though placing each asset by hand can result in a more visually appealing result, the process is time consuming. In the game industry, time is an essential resource, therefore there is a lot of research ongoing on this topic. Methods of efficiently placing high number of foliage and trees are already present in most of the 3D computer graphics software and game engines, in form of brushes that can be used to "paint" on the game world. In the area of procedural generation, objects occurring naturally in our world are probably the most studied, mostly because of the interest in theoretical biology. 
+A big challenge in game development is populating vast areas with small vegetation, grass and trees. Even though placing each asset by hand can result in a more visually appealing result, the process is time consuming. In the game industry, time is an essential resource, therefore there is a lot of research ongoing on this topic. Methods of efficiently placing high number of foliage and trees are already present in most of the 3D computer graphics software and game engines, in form of brushes that can be used to "paint" on the game world. In the area of procedural generation, objects occurring naturally in our world are probably the most studied, mostly because of the interest in theoretical biology, as stated in \cite{freiknecht2017survey}. Hungarian scientists Prusinkiewicz and Lindenmayer were among the first to start researching methods to describe the structure of plants using mathematical approaches. They suggested using a grammar, called \textit{L-Systems (Lindenmayer Systems)}. In order to better visualize the method, a graphical representation in form of a 2D grid, seen in Figure \ref{fig:turtleModel}, often called the \textit{turtle model}, can be used, with the following rules defined:
+\begin{gather*}
+    F->move\;one\;step\;forward,\;drawing\;a\;line;\\
+    f->move\;one\;step\;forward\;without\;drawing\;a\;line;\\
+    +->turn\;right\;by\;\delta\;degrees;\\
+    ->turn\;left\;by\;\delta\;degrees;\\
+    \cite{freiknecht2017survey}
+\end{gather*}
+
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width = 8cm]{figures/turtleModel.png}
+    \caption{A structure produced using the \textit{turtle model}, where the starting point is \((1, 1)\), and \(\delta = 90^{\circ}\), corresponding to the word \textbf{FF-F+F-FF+F-F-FFF}.}
+    \cite{freiknecht2017survey}
+    \label{fig:turtleModel}
+\end{figure}
+
+Based on this principle, 2D plants can efficiently be generated, with an example shown in Figure \ref{fig:plants}. Extending this method with new rules and notions such as "\textit{pitch up}, \textit{pitch down}, \textit{roll up} and \textit{roll down}" allows the grammar to produce 3D models as well\cite{freiknecht2017survey}. Denser plants like bushes can benefit from additional properties such as \textit{branch width}, and using variables that adjust the \textit{color}, for instance, helps with styling the results.
+
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width = 12cm]{figures/plants.png}
+    \caption{2D plants generated using the \textit{L-System}, proposed by Prusinkiewicz and Lindenmayer.}
+    \cite{freiknecht2017survey}
+    \label{fig:plants}
+\end{figure}
 
 \subsection{Roads and cities}
 
-Test
+Some games, especially the ones in the \textit{city-building} genre, are built with road generation systems at their core. Traffic infrastructure is an essential thing to manage in such games, from a gameplay perspective, thus the need of powerful, resource-light algorithms is present. There is no need to focus on air or sea traffic, since naive implementations are satisfactory, most of the times. Ilangovan proposes in his thesis \cite{ilangovan2009procedural} a method of generation that starts with the highways, the main entry-points in the map. Giving the generator groups of \textit{junction points}, a basic layout of the road system can be created, acting as the main artery from which other streets will branch out. Road creating tools that can allow players to draw their own road meshes on the map can be implemented using \textit{spline interpolations}.\\
+
+Another important aspect of \textit{city-building} games are the buildings, which have to be placed on the plots defined by the areas enclosed by streets, or along the streets, in plots of fixed dimensions. The buildings and objects such as street lamps, hydrants and cars are distributed randomly, following set rules. The assets can be also be procedurally generated, with algorithms able to do this already having been discussed (with the necessary modifications, of course). The simplest way is to have them already modeled beforehand, manually, then deterministically alter their rotation, size and location, based on different factors.
 
 \section{Related algorithms}
 
 \subsection{Planets}
 
-Test
-
-\subsection{Boids}
-
-Test
+Generating planets shares a lot of common ground with terrain generation. The idea is very similar: generate a noise map and model a spherical mesh based on it. The difficult part is trying to create different \textit{levels of detail (LOD)}, which is a big part in optimizing video games with complex 3D objects. \textit{LOD switching} implementations are usually designed to work on surfaces based on planes. When working on unorthodox surfaces, clever solutions have to be found. One is to actually create a sphere by "inflating" a cube, until there are no more sharp edges. Even though calculating \textit{normals} will be harder, the overall difficulty of the task will be lower, due to the fact that a sphere can now be thought of as 8 separate bent planes, stuck together. Also, the \textit{triangle count} will decrease, and will be more easily controlled, further increasing the performance of the application, whereas when working with a sphere, the number of triangles would increase rapidly near the two poles. Martin Kahoun talks in \cite{kahoun2010procedural} about a method that applies \textit{geometry clipmaps} to the elevation map, but the results are not good enough, because the \textit{LOD} would be controlled purely based on distance, and other factors that make a good implementation would miss.
 
 \subsection{Marching cubes}
 
-Test
+The \textit{marching cubes} algorithm has many uses, but one of the most interesting ones is in terrain generation. Consider we have a region of 3D space, chosen randomly. We can sample points at regular intervals, as seen in Figure \ref{fig:marchingCubes}, and feed their x-y-z coordinates, one by one, into a deterministic function that outputs a single value as a result. Computing the minimum and maximum of all the obtained values, we can create a \textit{spectrum}, used in later steps to control the \textit{surface level}.  
+
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width = 11cm]{figures/marchingCubes.png}
+    \caption{A cube with multiple values sampled as points, at regular intervals.}
+    \cite{marchingCubes}
+    \label{fig:marchingCubes}
+\end{figure}
+
+Let us suppose we set the \textit{surface level}, which can take values from \([-34, 16]\), to a value of \(-0.2\). All the points with coordinates that evaluate to a value below \(-0.2\) will be hidden, and not be taken into consideration when building the final result. The goal of the \textit{marching cubes} algorithm is to use the remaining, visible points to form triangles, which in turn will create the final 3D object, as seen in Figure \ref{fig:marchingCubesResult}. The method is described in depth in the paper \textit{MARCHING CUBES: A HIGH RESOLUTION 3D SURFACE CONSTRUCTION ALGORITHM}\cite{lorensen1987marching}, from 1987, in which the author also describes numerous applications, especially in the medical field.
+
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width = 11cm]{figures/marchingCubesResult.png}
+    \caption{A cube in which only the points that evaluate above the selected value are shown, forming triangles and thus the final shape.}
+    \cite{marchingCubes}
+    \label{fig:marchingCubesResult}
+\end{figure}
 
 \section{Simulations}
 
-Test
+\subsection{Overview}
+
+Some projects require a finer level of detail, and a higher level of realism. For example, a generated terrain will often miss "the final touch". In order to solve the problem and obtain a result that is almost indistinguishable from its real-life counterpart, most developers implement certain algorithms, or use software that can run simulations of real phenomena, such as \textit{thermal erosion}, \textit{hydraulic erosion} or \textit{clouds}. Also, when programming AI for flocks of birds, schools of fish or other groups of animals, this behaviour can be replicated with techniques such as the so called \textit{boids}.
 
 \subsection{Erosion}
 
-Test
+\textit{Thermal erosion} and \textit{hydraulic erosion} are natural phenomena that are highly studied in the field of computer graphics. A great paper that describes these and also offers an implementation that heavily utilizes the GPU, is \textit{Fast Hydraulic and Thermal Erosion on the GPU}, written in 2011 by Balasz Jako\cite{jako2011fast}. \textit{Thermal erosion} is described as hard surfaces that crack in smaller pieces, that move down to lower areas, due to gravity. The cause is the changing temperature, happening due to "the alternation of the hot Sun and the cold night air". \textit{Hydraulic erosion} is the result of rainfall and rivers dissolving land material and carrying it to different locations, where the \textit{sediment} is deposited. Due to the increased power of modern GPUs, physics based models are used to create fluid simulations, marking one way of achieving virtual erosion. Another way is using advanced particle systems, that are programmed to hit the ground, which is considered a 2D grid, and substract a certain value from the affected points, then calculate the velocity of the particles, to simulate them down-hill. All of this can be done in real-time, allowing the user to observe at each step the different results the algorithms produce. A side-by-side comparison between terrain generated using a noise map, with the aid of \textit{Perlin noise}, and the same terrain, enhanced by simulating \textit{hydraulic erosion}, can be seen in Figure \ref{fig:hydraulicErosion}.
+
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width = 16cm]{figures/hydraulicErosion.png}
+    \caption{A side-by-side comparison between a standard, procedurally generated terrain, and a terrain affected by 70.000 iterations of hydraulic erosion, all simulated in $\approx$3 seconds.}
+    \cite{hydraulicErosion}
+    \label{fig:hydraulicErosion}
+\end{figure}
 
 \subsection{Clouds}
 
-Test
+In video games, \textit{skyboxes} are one of the oldest tricks in the book. Developers enclose all the game area in a cube, and using a technique called \textit{cube mapping}, they project textures depicting the sky and unreachable landscapes, on all the interior faces of the cube\cite{skyboxWiki}. This way, the playable area is actually faked to look much greater than it actually is. A benefit of using this method is better performance, since the distant objects do not have to be real, modeled 3D objects that are actually rendered on the screen dynamically, significantly decreasing the need of high draw distances. Older games deal with clouds by "painting" them directly on the \textit{skybox}, as hand-crafted or procedurally generated textures\cite{roden2005clouds}. Their movement can be simulated by rotating the textures, or slightly altering the \textit{UV mapping}. Unfortunately, for today's standards, this is just not good enough anymore.\\
+
+State-of-the-art techniques involve generating \textit{clouds} that have actual volume, and follow real-world physics principles\cite{ebert1997volumetric}. One popular method of generating cloud shapes is using \textit{Worley noise}. To understand this algorithm, let us suppose we have a square, in which we scatter points randomly. In order to compute the noise map, we set the value of each pixel inside the square to the distance between that pixel's position and the nearest randomly placed point, mapped to a suitable range of values, such as \([-1, 1]\). Using a slightly altered version of this function, we can generate 3D noise maps, in which the resemblance to clouds is already seen. What really gives the realistic feel to \textit{volumetric clouds} is the ability of light to pass through them, with the amount of light controlled by the density of the clouds. Dynamic shadows can be cast on the surface of the game world, and lighting can change in real-time, in relation to the clouds; some developers also go to the extent of programming the so called \textit{god rays} effect\cite{godraysWiki}. The biggest downside is the fact that this technique is very taxing on computer resources and, due to the fact that a powerful GPU is required, not many players end up enjoying the beautiful virtual worlds, filled with \textit{volumetric clouds} (see Figure \ref{fig:clouds}).
+
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width = 16cm]{figures/clouds.png}
+    \caption{A screenshot of an in-game scene showcasing a dynamic sky system with \textit{volumetric clouds}.}
+    \cite{dynamicSky}
+    \label{fig:clouds}
+\end{figure}
+
+\subsection{Boids}
+
+Programming AI for \textit{non-playable characters} (NPCs) can sometimes prove to be a challenging task, and some smaller developers resort to 3rd party libraries, or implement naive solutions. Group behaviour of animals is a feature that not many games showcase, but in some instances (e.g., an underwater level), things like schools of fish that interact with the player are a big gameplay or atmospheric element. A well-known technique of generating a group of animals, in which each one acknowledges the existence of another, is called \textit{boids}, short for "bird-oid" objects, described thoroughly in \textit{Flocks, Herds, and Schools: A Distributed Behavioral Model}\cite{reynolds1987flocks}, published in 1987 by Craig W. Reynolds. A \textit{boid}, that in a basic graphic representation can conveniently be denoted by a small square or triangle, has to follow some rules. These rules are not strict, offering some degree of flexibility, in order to obtain the specific result that one wants to observe. The first rules says that one \textit{boid} has a fixed field of view, that helps him steer away from other directly incoming \textit{boids}, in order to avoid crashing (behaviour known as \textit{separation}). The second and a more important rule says that \textit{boids} have to correct their velocity by trying to match the velocity of nearby passing \textit{boids} (behaviour known as \textit{alignment}). Last but not least, the final rule states that every \textit{boid} has to "gravitate" towards the center of mass of the nearest formed group (behaviour known as \textit{cohesion}). Simulations based on this algorithm can come extremely close to the real-life structure and behaviour of bird flocks, fish schools or other animals that group up, especially if done in a 3D environment, with convincing visual models.
